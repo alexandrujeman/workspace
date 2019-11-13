@@ -1,0 +1,25 @@
+{
+  "logs": [
+    {
+      "id": 1,
+      "message": "Changed hard drive on workstation 005",
+      "attention": false,
+      "date": "11-13-2019",
+      "tech": "Sam Samuel 133"
+    },
+    {
+      "id": 2,
+      "message": "Workstation 0066 not working",
+      "attention": true,
+      "date": "11-13-2019",
+      "tech": "Sam Samuel 074"
+    },
+    {
+      "id": 3,
+      "message": "Changed memory on workstation 050",
+      "attention": false,
+      "date": "11-13-2019",
+      "tech": "Sam Samuel 311"
+    }
+  ]
+}
