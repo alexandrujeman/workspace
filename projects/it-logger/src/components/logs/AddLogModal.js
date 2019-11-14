@@ -12,6 +12,11 @@ const AddLogModal = () => {
     } else {
       console.log(message, tech, attention);
     }
+
+    //Clear Fields
+    setMessage("");
+    setAttention(false);
+    setTech("");
   };
 
   return (
