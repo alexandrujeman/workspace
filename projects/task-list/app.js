@@ -8,6 +8,8 @@ const taskInput = document.querySelector("#task");
 // Load event listeners
 loadEventListeners();
 function loadEventListeners() {
+  // DOM load event
+  document.addEventListener("DOMContentLoaded", getTasks);
   // Add task event
   form.addEventListener("submit", addTask);
   // Remove task event
@@ -16,6 +18,34 @@ function loadEventListeners() {
   clearBtn.addEventListener("click", clearTasks);
   // Filter task event
   filter.addEventListener("keyup", filterTasks);
+}
+
+// Get tasks from local storage
+function getTasks() {
+  let tasks;
+  if (localStorage.getItem("tasks") === null) {
+    tasks = [];
+  } else {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+  }
+  tasks.forEach(function(task) {
+    // Create li element
+    const li = document.createElement("li");
+    // Add class
+    li.className = "collection-item";
+    // Create text node and append to li
+    li.appendChild(document.createTextNode(task));
+    // Create new link element
+    const link = document.createElement("a");
+    // Add class
+    link.className = "delete-item secondary-content";
+    // Add icon html
+    link.innerHTML = '<i class="fa fa-remove"></i>';
+    // Append the link to li
+    li.appendChild(link);
+    // Append li to ul
+    taskList.appendChild(li);
+  });
 }
 
 // Add task
@@ -39,6 +69,9 @@ function addTask(e) {
     li.appendChild(link);
     // Append li to ul
     taskList.appendChild(li);
+    // Save tasks in local storage
+    saveTasksLS(taskInput.value);
+    // Clear input
     taskInput.value = "";
     e.preventDefault();
   }
@@ -48,6 +81,8 @@ function addTask(e) {
 function removeTask(e) {
   if (e.target.parentElement.classList.contains("delete-item")) {
     e.target.parentElement.parentElement.remove();
+    // Remove task from local storage
+    removeTaskLS(e.target.parentElement.parentElement);
   }
 }
 
@@ -56,6 +91,8 @@ function clearTasks(e) {
   while (taskList.firstChild) {
     taskList.removeChild(taskList.firstChild);
   }
+  // Clear from local storage
+  clearTasksLS();
 }
 
 // Filter tasks
@@ -70,4 +107,38 @@ function filterTasks(e) {
       task.style.display = "none";
     }
   });
+}
+
+// Save tasks in local storage
+function saveTasksLS(task) {
+  let tasks;
+  if (localStorage.getItem("tasks") === null) {
+    tasks = [];
+  } else {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+  }
+  tasks.push(task);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Remove tasks from local storage
+function removeTaskLS(taskItem) {
+  let tasks;
+  if (localStorage.getItem("tasks") === null) {
+    tasks = [];
+  } else {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+  }
+  tasks.forEach(function(task, index) {
+    if (taskItem.textContent === task) {
+      tasks.splice(index, 1);
+    }
+  });
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Clear tasks from local storage
+function clearTasksLS() {
+  localStorage.clear();
 }
