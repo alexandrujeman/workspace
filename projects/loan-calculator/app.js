@@ -5,7 +5,8 @@ document.getElementById("loan-form").addEventListener("submit", function(e) {
   // Show loader
   document.getElementById("loading").style.display = "block";
 
-  setTimeout(calculateResults, 2000);
+  // Calculate results after 1 second
+  setTimeout(calculateResults, 1000);
 
   e.preventDefault();
 });
@@ -20,6 +21,7 @@ function calculateResults(e) {
   const totalPaymentUI = document.getElementById("total-payment");
   const totalInterestUI = document.getElementById("total-interest");
 
+  // Loan formulas
   const principal = parseFloat(amountUI.value);
   const calculatedInterest = parseFloat(interestUI.value) / 100 / 12;
   const calculatedPayments = parseFloat(yearsUI.value) * 12;
@@ -27,17 +29,20 @@ function calculateResults(e) {
   // Compute montlhy payment
   const x = Math.pow(1 + calculatedInterest, calculatedPayments);
   const monthly = (principal * x * calculatedInterest) / (x - 1);
-
+  // Hide loader after calculations are done
   document.getElementById("loading").style.display = "none";
 
+  // Check and show rsults or throw error
   if (isFinite(monthly)) {
     monthtlyPaymentUI.value = monthly.toFixed(2);
     totalPaymentUI.value = (monthly * calculatedPayments).toFixed(2);
     totalInterestUI.value = (monthly * calculatedPayments - principal).toFixed(
       2
     );
+    // Show results if no errors
     document.getElementById("results").style.display = "block";
   } else {
+    // Calls showError function with argument
     showError("Please check your numbers");
   }
 
