@@ -1,62 +1,61 @@
-// Book Constructor
-function Book(title, author, isbn) {
-  this.title = title;
-  this.author = author;
-  this.isbn = isbn;
+// Written in ES6 compiled to ES5 with TypeScript
+class Book {
+  constructor(title, author, isbn) {
+    this["title"] = title;
+    this["author"] = author;
+    this["isbn"] = isbn;
+  }
 }
 
-// UI Constructor
-function UI() {}
+class UI {
+  addBookToList(book) {
+    const list = document.getElementById("book-list");
+    // Create tr element
+    const row = document.createElement("tr");
 
-UI.prototype.addBookToList = function(book) {
-  const list = document.getElementById("book-list");
-  // Create tr element
-  const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${book.title}</td>
+      <td>${book.author}</td>
+      <td>${book.isbn}</td>
+      <td><a href="#" class="delete">X</a></td>
+    `;
 
-  row.innerHTML = `
-    <td>${book.title}</td>
-    <td>${book.author}</td>
-    <td>${book.isbn}</td>
-    <td><a href="#" class="delete">X</a></td>
-  `;
-
-  list.appendChild(row);
-};
-
-UI.prototype.showAlert = function(message, className) {
-  // Create Div
-  const div = document.createElement("div");
-  // Add classes
-  div.className = `alert ${className}`;
-  // Add text
-  div.appendChild(document.createTextNode(message));
-  // Get parent
-  const container = document.querySelector(".container");
-  // Get form
-  const form = document.querySelector("#book-form");
-
-  // Insert alert
-  container.insertBefore(div, form);
-
-  // Remove after 3 sec
-  setTimeout(function() {
-    document.querySelector(".alert").remove();
-  }, 3000);
-};
-
-// Delete book
-UI.prototype.deleteBook = function(target) {
-  if (target.className === "delete") {
-    target.parentElement.parentElement.remove();
+    list.appendChild(row);
   }
-};
 
-// Clear fields
-UI.prototype.clearFields = function() {
-  (<HTMLInputElement>document.getElementById("title")).value = "";
-  (<HTMLInputElement>document.getElementById("author")).value = "";
-  (<HTMLInputElement>document.getElementById("isbn")).value = "";
-};
+  showAlert(message, className) {
+    // Create Div
+    const div = document.createElement("div");
+    // Add classes
+    div.className = `alert ${className}`;
+    // Add text
+    div.appendChild(document.createTextNode(message));
+    // Get parent
+    const container = document.querySelector(".container");
+    // Get form
+    const form = document.querySelector("#book-form");
+
+    // Insert alert
+    container.insertBefore(div, form);
+
+    // Remove after 3 sec
+    setTimeout(function() {
+      document.querySelector(".alert").remove();
+    }, 3000);
+  }
+
+  deleteBook(target) {
+    if (target.className === "delete") {
+      target.parentElement.parentElement.remove();
+    }
+  }
+
+  clearFields() {
+    (<HTMLInputElement>document.getElementById("title")).value = "";
+    (<HTMLInputElement>document.getElementById("author")).value = "";
+    (<HTMLInputElement>document.getElementById("isbn")).value = "";
+  }
+}
 
 // Event Listeners for add book
 document.getElementById("book-form").addEventListener(
