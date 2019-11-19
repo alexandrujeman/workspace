@@ -13,6 +13,11 @@ UI.prototype.addBookToList = function (book) {
     row.innerHTML = "\n    <td>" + book.title + "</td>\n    <td>" + book.author + "</td>\n    <td>" + book.isbn + "</td>\n    <td><a href=\"#\" class=\"delete\">X</a></td>\n  ";
     list.appendChild(row);
 };
+UI.prototype.clearFields = function () {
+    document.getElementById("title").value = "";
+    document.getElementById("author").value = "";
+    document.getElementById("isbn").value = "";
+};
 // Event Listeners
 document.getElementById("book-form").addEventListener("submit", function (e) {
     var titleUI = document.getElementById("title").value;
@@ -24,5 +29,7 @@ document.getElementById("book-form").addEventListener("submit", function (e) {
     // Instantiate UI
     var ui = new UI();
     ui.addBookToList(book);
+    // Clear input fields after book is added
+    ui.clearFields();
     e.preventDefault();
 });
