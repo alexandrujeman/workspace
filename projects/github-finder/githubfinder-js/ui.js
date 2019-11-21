@@ -1,8 +1,11 @@
+// Create UI class
 class UI {
   constructor() {
+    // Get HTML div element where profile data will be displayed
     this.profile = document.getElementById("profile");
   }
 
+  // Show user profile with user info fetched
   showProfile(user) {
     this.profile.innerHTML = `
     <div class="card card-body mb-3">
@@ -33,7 +36,9 @@ class UI {
 
   // Show user repos
   showRepos(repos) {
+    // Init empty string
     let output = "";
+    // for each repo passed create HTML card
     repos.forEach(repo => {
       output += `
         <div class="card card-body mb-2">
@@ -50,11 +55,13 @@ class UI {
         </div>
       `;
     });
+    // If output is not empty get HTML element by id repos and display data
     if (output.length !== 0) {
       document.getElementById("repos").innerHTML = output;
     }
   }
 
+  // Clear profile
   clearProfile() {
     this.profile.innerHTML = "";
   }
@@ -82,7 +89,9 @@ class UI {
   }
 
   clearAlert() {
+    // Get all existing alert class element
     const currentAlert = document.querySelector(".alertCustom");
+    // If Alert class element exist - remove
     if (currentAlert) {
       currentAlert.remove();
     }
