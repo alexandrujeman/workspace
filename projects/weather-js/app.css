@@ -1,0 +1,10 @@
+#w-icon {
+  z-index: 10;
+  position: absolute;
+  margin-left: -10%;
+  transform: translateY(-100px);
+}
+
+#w-string {
+  margin-bottom: 100px;
+}
