@@ -33,7 +33,7 @@ app.get("/weather/:city/:state", async (req, res) => {
   const state = req.params.state;
   // Make request to Yahoo API
   request.get(
-    `https://weather-ydn-yql.media.yahoo.com/forecastrss?location=${city},${state}&format=json`,
+    `https://weather-ydn-yql.media.yahoo.com/forecastrss?location=${city},${state}&u=c&format=json`,
     null,
     null,
     function(err, data, result) {
