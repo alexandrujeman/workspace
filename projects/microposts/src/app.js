@@ -1,10 +1,12 @@
+import { http } from "./http";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-const getData = async (url) => {
-  const response = await fetch(url);
-  const result = await response.json();
-  console.log(result);
-};
+// Het post on DOM load
+document.addEventListener('DOMContentLoaded', getPosts)
 
-getData('https://jsonplaceholder.typicode.com/posts');
+function getPosts() {
+  http.get("http://localhost:3000/posts")
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+}
