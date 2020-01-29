@@ -15,7 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
+from django.urls import path
+from django.urls import include
+from . api import router
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
+    url(r'^api/articles/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls')),
 ]
+
+### API Endpoints ###
+# http://0.0.0.0:8000/api/articles/v1/          # GET, POST
+# http://0.0.0.0:8000/api/articles/v1/4/        # GET, PUT, PATCH, DELETE
+#
