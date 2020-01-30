@@ -16,21 +16,25 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from django.urls import path
 from django.urls import include
-from rest_framework_jwt.views import obtain_jwt_token
-from rest_framework_jwt.views import verify_jwt_token
 from . api import router
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/articles/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls')),
-    url(r'^api-token-auth/', obtain_jwt_token),
-    url(r'^api-token-verify/', verify_jwt_token),
+    url(r'^auth/', include('djoser.urls')),
+    url(r'^auth/', include('djoser.urls.jwt')),
 ]
 
 ### API Endpoints ###
 # http://0.0.0.0:8000/api/articles/v1/          # GET, POST
 # http://0.0.0.0:8000/api/articles/v1/4/        # GET, PUT, PATCH, DELETE
 #
+#### Authentication endpoints ####
+# /auth/users/	Register a new user
+# /auth/users/me/	retrieve/update the currently logged in user
+# /auth/jwt/create/	create a JWT by passing a valid user in the post request to this endpoint
+# /auth/jwt/refresh/	get a new JWT once the lifetime of the previously generated one expires
+# /api/accounts/all-profiles/	get all user profiles and create a new one
+# /api/accounts/profile/id/	detail view of a user's profile

@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from django.conf import settings
-import datetime
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'MODULES_API',
+    'djoser',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -79,15 +81,26 @@ WSGI_APPLICATION = 'REST_API.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql', 
+#         'NAME': 'mysql_server',
+#         'USER': 'root',
+#         'PASSWORD': '388180B441cb',
+#         'HOST': '127.0.0.1',   
+#         'PORT': '3306',
+#     }    
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'mysql_server',
-        'USER': 'root',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres_server',
+        'USER': 'postgres',
         'PASSWORD': '388180B441cb',
-        'HOST': '127.0.0.1',   
-        'PORT': '3306',
-    }    
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
 }
 
 # Password validation
@@ -139,39 +152,37 @@ CORS_ORIGIN_WHITELIST = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
-JWT_AUTH = {
-    'JWT_SECRET_KEY': settings.SECRET_KEY,
-    'JWT_GET_USER_SECRET_KEY': None,
-    'JWT_PRIVATE_KEY': None,
-    'JWT_PUBLIC_KEY': None,
-    'JWT_ALGORITHM': 'HS256',
-    'JWT_AUDIENCE': None,
-    'JWT_ISSUER': None,
-    'JWT_ENCODE_HANDLER':
-        'rest_framework_jwt.utils.jwt_encode_payload',
-    'JWT_DECODE_HANDLER':
-        'rest_framework_jwt.utils.jwt_decode_token',
-    'JWT_PAYLOAD_HANDLER':
-        'rest_framework_jwt.utils.jwt_create_payload',
-    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-        'rest_framework_jwt.utils.jwt_get_username_from_payload_handler',
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-    'JWT_RESPONSE_PAYLOAD_HANDLER':
-        'rest_framework_jwt.utils.jwt_create_response_payload',
-    'JWT_AUTH_COOKIE': None
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': 'secretkey',
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
