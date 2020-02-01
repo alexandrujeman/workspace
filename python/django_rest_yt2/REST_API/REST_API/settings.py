@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'REST_API.wsgi.application'
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'mysql_server',
 #         'USER': 'root',
-#         'PASSWORD': '388180B441cb',
+#         'PASSWORD': 'password123',
 #         'HOST': '127.0.0.1',
 #         'PORT': '3306',
 #     }
@@ -98,7 +98,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres_server',
         'USER': 'postgres',
-        'PASSWORD': '388180B441cb',
+        'PASSWORD': ';9\=`Z_2q4(E^fFU',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
