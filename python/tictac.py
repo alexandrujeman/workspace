@@ -3,48 +3,58 @@ import itertools
 
 def game_board(game_map, player=0, row=0, col=0, display=False):
     try:
-        if game_map[row][column] == 0:
+        if game_map[row][col] != 0:
             print("You cannot use this position!")
+            return game_map, False
 
-        print("   0  1  2")
+        print('   ' + '  '.join([str(x) for x in range(len(game))]))
         if not display:
             game_map[row][col] = player
         for i, row in enumerate(game):
             print(i, row)
-        return game_map
+        return game_map, True
     except IndexError as e:
         print("Error: make sure you input rom/column as 0, 1 or 2", e)
+        return game_map, False
     except Exception as e:
         print("Somthing went very wrong!", e)
+        return game_map, False
 
 
 def win(current_game):
-    # Horizontal
+    def all_same(el):
+        return True if el.count(el[0]) == len(el) and el[0] != 0 else False
+
+    # Horizontals
     for row in game:
-        if row.count(row[0]) == len(row) and row[0] != 0:
+        if all_same(row):
             print("Winner!")
-    # Vertical
+            return True
+    # Verticals
     for col in range(len(game)):
         check = []
         for row in game:
             check.append(row[col])
-        if check.count(check[0]) == len(check) and check[0] != 0:
+        if all_same(check):
             print("Winner!")
+            return True
 
-    # Diagonal
+    # Diagonals
     diags_l = []
     for ix in range(len(game)):
         diags_l.append(game[ix][ix])
 
-    if diags_l.count(diags_l[0]) == len(diags_l) and diags_l[0] != 0:
-        print("Winner on diag_r!")
+    if all_same(diags_l):
+        print("Winner on diag (\\)!")
+        return True
 
     diags_r = []
     for col, row in enumerate(reversed(range(len(game)))):
         diags_r.append(game[row][col])
 
-    if diags_r.count(diags_r[0]) == len(diags_r) and diags_r[0] != 0:
-        print("Winner on diag_l!")
+    if all_same(diags_r):
+        print("Winner on diag (/)!")
+        return True
 
 
 play = True
@@ -55,13 +65,29 @@ while play:
             [0, 0, 0]]
 
     game_won = False
-    game = game_board(game, display=True)
+    game, _ = game_board(game, display=True)
     player_choice = itertools.cycle([1, 2])
+
     while not game_won:
-        win(game)
         current_player = next(player_choice)
         print(f"Current player: {current_player}")
-        column_choice = int(
-            input("What column do you want to play? (0, 1, 2): "))
-        row_choice = int(input("What row do you want to play? (0, 1, 2): "))
-        game = game_board(game, current_player, row_choice, column_choice)
+        played = False
+        while not played:
+            column_choice = int(
+                input("What column do you want to play? (0, 1, 2): "))
+            row_choice = int(
+                input("What row do you want to play? (0, 1, 2): "))
+            game, played = game_board(game, current_player,
+                                      row_choice, column_choice)
+        if win(game):
+            game_won = True
+            new_game = input(
+                "The game is over, would you like to play again? (y/n) ")
+            if new_game.lower() == 'y':
+                print("Restarting...")
+            elif new_game.lower() == 'n':
+                print("Bye...")
+                play = False
+            else:
+                print("Not a valid answer...")
+                play = False
